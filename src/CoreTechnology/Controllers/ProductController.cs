@@ -21,13 +21,46 @@ namespace CoreTechnology.Controllers
             _categoryRepository = categoryRepository;
         }
 
-        public ViewResult List()
-        {
-            ProductsListViewModel productsListViewModel = new ProductsListViewModel();
-            productsListViewModel.Products = _productRepository.Products;
+        //public ViewResult List()
+        //{
+        //    ProductsListViewModel productsListViewModel = new ProductsListViewModel();
+        //    productsListViewModel.Products = _productRepository.Products;
 
-            productsListViewModel.CurrentCategory = "Laptops";
-            return View(productsListViewModel);
+        //    productsListViewModel.CurrentCategory = "Laptops";
+        //    return View(productsListViewModel);
+        //}
+
+        public ViewResult List(string category)
+        {
+            IEnumerable<Product> products;
+            string currentCategory = string.Empty;
+
+            if (string.IsNullOrEmpty(category))
+            {
+                products = _productRepository.Products.OrderBy(p => p.ProductId);
+                currentCategory = "All products";
+            }
+            else
+            {
+                products = _productRepository.Products.Where(p => p.Category.CategoryName == category)
+                    .OrderBy(p => p.ProductId);
+                currentCategory = _categoryRepository.Categories.FirstOrDefault(c => c.CategoryName == category).CategoryName;
+            }
+
+            return View(new ProductsListViewModel()
+            {
+                Products = products,
+                CurrentCategory = currentCategory
+            });
+        }
+
+        public IActionResult Details(int id)
+        {
+            var product = _productRepository.GetProductById(id);
+            if (product == null)
+                return NotFound();
+
+            return View(product);
         }
     }
 }

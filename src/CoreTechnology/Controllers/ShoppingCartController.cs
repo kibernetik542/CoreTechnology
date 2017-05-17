@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreTechnology.Controllers
 {
-    public class ShoppingController : Controller
+    public class ShoppingCartController : Controller
     {
         private readonly IProductRepository _productRepository;
         private readonly ShoppingCart _shoppingCart;
 
-        public ShoppingController(IProductRepository productRepository, ShoppingCart shoppingCart)
+        public ShoppingCartController(IProductRepository productRepository, ShoppingCart shoppingCart)
         {
             _productRepository = productRepository;
             _shoppingCart = shoppingCart;
@@ -34,10 +34,28 @@ namespace CoreTechnology.Controllers
             return View(shoppingCartViewModel);
         }
 
-        //public RedirectToActionResult AddToShoppingCart(int productId)
-        //{
-        //    var selectedProduct = _productRepository.Products.FirstOrDefault(p => p.ProductId == productId);
-        //    return View();
-        //}
+        public RedirectToActionResult AddToShoppingCart(int productId)
+        {
+            var selectedProduct = _productRepository.Products
+                .FirstOrDefault(p => p.ProductId == productId);
+
+            if (selectedProduct != null)
+            {
+                _shoppingCart.AddToCart(selectedProduct,1);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public RedirectToActionResult RemoveFromShoppingCart(int pieId)
+        {
+            var selectedPie = _productRepository.Products.FirstOrDefault(p => p.ProductId == pieId);
+
+            if (selectedPie != null)
+            {
+                _shoppingCart.RemoveFromCart(selectedPie);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

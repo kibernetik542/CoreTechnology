@@ -32,6 +32,7 @@ namespace CoreTechnology
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ShoppingCart>(sp => ShoppingCart.GetCart(sp));
+            services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddMvc();
 
             services.AddMemoryCache();
@@ -46,9 +47,22 @@ namespace CoreTechnology
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseSession();
-            app.UseMvcWithDefaultRoute();
+            //app.UseMvcWithDefaultRoute();
 
-           // DbInitializer.Seed(app);
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "categoryFilter",
+                    template: "Product/{action}/{category?}",
+                    defaults:new {Controller = "Product", action = "List"});
+
+
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+
         }
     }
 }
