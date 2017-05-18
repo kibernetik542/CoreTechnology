@@ -2,6 +2,13 @@
 
 <form class="form-horizontal" asp-controller="Account" asp-action="Register" method="post" role="form">
     <h2 class="alert alert-success text-center">Welcome our register page</h2>
+    <h6 class="alert alert-info text-center">
+        <b class="text-danger text-uppercase">Please pay attention!</b>
+        When create password use at least 1 big,
+        1 little,1 numeric and 1 alphanumeric symbols:
+        <b class="text-success text-uppercase">Example:</b> 1234-Test
+        &nbsp;<span class="glyphicon glyphicon-info-sign"></span>
+    </h6>
    
     <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -30,4 +37,6 @@
             </button>
         </div>
     </div>
+    
+
 </form>
