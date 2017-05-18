@@ -1,4 +1,5 @@
 ﻿using CoreTechnology.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,13 +17,14 @@ namespace CoreTechnology.Controllers
             _shoppingCart = shoppingCart;
         }
 
-        // GET: /<controller>/
+        [Authorize]
         public IActionResult Checkout()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Checkout(Order order)
         {
             var items = _shoppingCart.GetShoppingCartItems();
