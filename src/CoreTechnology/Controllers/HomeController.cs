@@ -1,6 +1,9 @@
-﻿using CoreTechnology.Models;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using CoreTechnology.Models;
 using CoreTechnology.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,5 +28,7 @@ namespace CoreTechnology.Controllers
 
             return View(homeViewModel);
         }
+
+      
     }
 }
